@@ -35,12 +35,14 @@ to the network.
 
 What aspect of security do load balancers protect? 
  
-        defends an organization against distributed denial-of-service (DDoS) attacks.
+ -      Defends an organization against distributed denial-of-service (DDoS) attacks.
+ -      Creates access controls that gives correct permissions to users.
  
  
 What is the advantage of a jump box?_ 
  
-        updates only need to be put on that single system and be deployed to the VMs it connects to.
+-       Updates only need to be put on that single system and be deployed to the VMs it connects to.
+-       Makes troubleshooting easier.
 
 Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the 
 
@@ -71,7 +73,9 @@ The machines on the internal network are not exposed to the public Internet.
 
 Only the Gateway machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses:
 
-        40.87.122.4; 10.0.0.5; 10.0.0.6
+        Local Host (my public IP); 
+        Web-1 10.0.0.5; 
+        Web-2 10.0.0.6
 
 Machines within the network can only be accessed by the load balancer.
 Which machine did you allow to access your ELK VM?
@@ -85,21 +89,27 @@ A summary of the access policies in place can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses  |
 |----------|---------------------|---------------------- |
-| JumpBox  |  Yes                |10.0.0.0/16-10.1.0.0/16|
-| ELK      |  No                 |10.1.0.5               |
+| JumpBox  |  Yes                |My public IP           |
+| ELK      |  Yes                |10.1.0.5/My public IP  |
 | Web-1    |  No                 |10.0.0.0/16-10.1.0.0/16|
 | Web-2    |  No                 |10.0.0.0/16-10.1.0.0/16|
 ### Elk Configuration
 
 
-- TODO: Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
+Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
+
+        It avoids human error
+        enables automation for more efficient changes
+        Saves coding time
+        
 
 What is the main advantage of automating configuration with Ansible? 
 
         you only have to do it once
+        avoids errors
 
 The playbook implements the following tasks:
-- _TODO: In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
+In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
  
         install docker.io
         install pip3
@@ -124,7 +134,10 @@ Specify which Beats you successfully installed_
         filebeats and metricbeats
 
 These Beats allow us to collect the following information from each machine:
-- _TODO: In 1-2 sentences, explain what kind of data each beat collects, and provide 1 example of what you expect to see. E.g., `Winlogbeat` collects Windows logs, which we use to track user logon events, etc._
+In 1-2 sentences, explain what kind of data each beat collects, and provide 1 example of what you expect to see. E.g., `Winlogbeat` collects Windows logs, which we use to track user logon events, etc._
+
+        - Filebeats collects data about open files how often they've been accessed and by whom.
+        - Metricbeats collects data about the VM metrics and performance... memory usage, CPU usage
 
 ### Using the Playbook
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
@@ -148,26 +161,27 @@ SSH into the control node and follow the steps below:
         Kibana 
   to check that the installation worked as expected.
 
-_TODO: Answer the following questions to fill in the blanks:_
+Answer the following questions to fill in the blanks:_
 - _Which file is the playbook? 
-- 
-        - *-playbook.yml 
+
+        ELK-playbook.yml 
 Where do you copy it? 
 
         /etc/ansible
-- _Which file do you update to make Ansible run the playbook on a specific machine? 
-- 
-        - *-config.yml 
+Which file do you update to make Ansible run the playbook on a specific machine? 
+
+        /etc/ansible/hosts
+       
   How do I specify which machine to install the ELK server on versus which to install Filebeat on?_ 
 
         by typing in the IP address of the server you want to install on
-- _Which URL do you navigate to in order to check that the ELK server is running? 
-- 
-        - http:\\104.42.252.128:5601
+Which URL do you navigate to in order to check that the ELK server is running? 
+
+        http://104.42.252.128:5601/app/kibana
 
 _As a **Bonus**, provide the specific commands the user will need to run to download the playbook, update the files, etc._ 
 
         cd /etc/ansible/ 
         nano playbook.yml 
         ansible-playbook playbook.yml
-        http:\\104.42.252.128:5601
+        http://104.42.252.128:5601
